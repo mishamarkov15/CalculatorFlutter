@@ -11,6 +11,16 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        color: this.color,
+        child: Center(
+            child: Text(
+          buttonText,
+          style: TextStyle(color: this.textColor),
+        )),
+      ),
+    );
   }
 }
