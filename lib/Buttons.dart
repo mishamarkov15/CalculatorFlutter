@@ -5,7 +5,8 @@ class Button extends StatelessWidget {
   final textColor;
   final String buttonText;
 
-  Button(this.color, this.textColor, this.buttonText);
+  Button(
+      {required this.color, required this.textColor, required this.buttonText});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class Button extends StatelessWidget {
               child: Text(
             buttonText,
             style: TextStyle(color: this.textColor),
+            textScaleFactor: 1.5,
           )),
         ),
       ),
