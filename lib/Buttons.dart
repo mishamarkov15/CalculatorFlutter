@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(60),
         child: Container(
           color: this.color,
           child: Center(

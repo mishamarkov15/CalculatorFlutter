@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepPurple[100],
+        backgroundColor: Color.fromARGB(255, 23, 23, 23),
         body: Column(
           children: <Widget>[
             Expanded(
@@ -59,14 +59,31 @@ class _HomePageState extends State<HomePage> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4),
                       itemBuilder: (BuildContext context, int index) {
-                        return Button(
-                          buttonText: buttons[index],
-                          color: Colors.deepPurple,
-                          textColor: Colors.white,
-                        );
+                        if (index >= 0 && index <= 2) {
+                          return Button(
+                              buttonText: buttons[index],
+                              color: Color.fromARGB(255, 138, 138, 138),
+                              textColor: Colors.white);
+                        } else {
+                          return Button(
+                            buttonText: buttons[index],
+                            color: isOperator(buttons[index])
+                                ? Colors.orange
+                                : Color.fromARGB(255, 83, 83, 83),
+                            textColor: Colors.white,
+                          );
+                        }
                       })),
             ),
           ],
         ));
+  }
+
+  bool isOperator(String btnText) {
+    return btnText == '÷' ||
+        btnText == 'x' ||
+        btnText == '-' ||
+        btnText == '+' ||
+        btnText == '=';
   }
 }
