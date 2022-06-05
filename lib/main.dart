@@ -1,5 +1,7 @@
 import 'package:calculator/Buttons.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
+import 'package:math_expressions/math_expressions.dart';
 
 void main() => runApp(const MyApp());
 
@@ -123,9 +125,19 @@ class _HomePageState extends State<HomePage> {
                                   : const Color.fromARGB(255, 83, 83, 83),
                               textColor: Colors.white,
                               buttonTapped: () {
-                                setState(() {
-                                  userQuestion += buttons[index];
-                                });
+                                if (index == buttons.length - 1) {
+                                  setState(() {
+                                    equalPressed();
+                                  });
+                                } else if (index == buttons.length - 2) {
+                                  setState(() {
+                                    ansPressed();
+                                  });
+                                } else {
+                                  setState(() {
+                                    userQuestion += buttons[index];
+                                  });
+                                }
                               });
                         }
                       })),
@@ -140,5 +152,21 @@ class _HomePageState extends State<HomePage> {
         btnText == '-' ||
         btnText == '+' ||
         btnText == '=';
+  }
+
+  void ansPressed() {
+    userQuestion += userAnswer;
+  }
+
+  void equalPressed() {
+    String finalQuestion = userQuestion;
+    finalQuestion = finalQuestion.replaceAll('x', '*');
+
+    Parser p = Parser();
+    Expression exp = p.parse(finalQuestion);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+    userAnswer = eval.toString();
   }
 }
