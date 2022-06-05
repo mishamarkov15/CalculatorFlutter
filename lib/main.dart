@@ -1,12 +1,14 @@
 import 'package:calculator/Buttons.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
@@ -14,11 +16,20 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  var userQuestion = '';
+  var userAnswer = '';
+
+  final outputTextStyle = const TextStyle(color: Colors.white, fontSize: 24);
+
+  Map<int, Function> buttonFunctions = {};
+
   final List<String> buttons = [
     'C',
     'DEL',
@@ -45,33 +56,77 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 23, 23, 23),
+        backgroundColor: const Color.fromARGB(255, 23, 23, 23),
         body: Column(
           children: <Widget>[
             Expanded(
-              child: Container(),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        userQuestion,
+                        style: outputTextStyle,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        userAnswer,
+                        style: outputTextStyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Expanded(
               flex: 2,
               child: Container(
                   child: GridView.builder(
                       itemCount: buttons.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4),
                       itemBuilder: (BuildContext context, int index) {
                         if (index >= 0 && index <= 2) {
                           return Button(
                               buttonText: buttons[index],
-                              color: Color.fromARGB(255, 138, 138, 138),
-                              textColor: Colors.white);
+                              color: const Color.fromARGB(255, 138, 138, 138),
+                              textColor: Colors.white,
+                              buttonTapped: () {
+                                if (index == 0) {
+                                  setState(() {
+                                    userQuestion = '';
+                                  });
+                                } else if (index == 1) {
+                                  setState(() {
+                                    userQuestion.isNotEmpty
+                                        ? userQuestion = userQuestion.substring(
+                                            0, userQuestion.length - 1)
+                                        : '';
+                                  });
+                                }
+                              });
                         } else {
                           return Button(
-                            buttonText: buttons[index],
-                            color: isOperator(buttons[index])
-                                ? Colors.orange
-                                : Color.fromARGB(255, 83, 83, 83),
-                            textColor: Colors.white,
-                          );
+                              buttonText: buttons[index],
+                              color: isOperator(buttons[index])
+                                  ? Colors.orange
+                                  : const Color.fromARGB(255, 83, 83, 83),
+                              textColor: Colors.white,
+                              buttonTapped: () {
+                                setState(() {
+                                  userQuestion += buttons[index];
+                                });
+                              });
                         }
                       })),
             ),
